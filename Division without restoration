@@ -1,0 +1,39 @@
+from bitstring import BitArray
+
+
+def leftshift(x,amt):
+  l=x.len
+  x=BitArray(int=(x.int<<amt),length=l)
+  return x
+
+
+def divwithresto(di,d,bf):
+  b=2*bf
+  Di=BitArray(int=di,length=bf)
+  D=BitArray(int=d,length=b)
+  D1=BitArray(int=-d,length=b)
+  D=D<<bf
+  D1=D1<<bf
+  Di.prepend(BitArray(int=0,length=bf))
+  for i in range(1,bf+1):
+    Di=leftshift(Di,1)
+    print("Left Shift ",Di.bin)
+    Di=BitArray(int=Di.int+D1.int,length=b)
+    if Di.int<0:
+      print("After A-M ",Di.bin)
+      Di=BitArray(int=Di.int+D.int,length=b)
+      print("Restoration: ",Di.bin)
+    else:
+      Di=BitArray(int=Di.int+1,length=b)
+      print("After A-M ",Di.bin)
+  Q=Di[-bf:]
+  R=Di[:bf]
+  return Q.int,R.int
+
+
+x=int(input("Enter first number"))
+y=int(input("Enter second number"))
+quotient,rem=divwithresto(x,y,4)
+print("Quotient = ",quotient)
+print("Remainder = ",rem)
+
